@@ -90,7 +90,7 @@ form {
     color: #fff;
 }
 
-#due-date {
+#duedate {
     width: 25%;
     padding: 10px 15px;
 
@@ -164,7 +164,7 @@ p{
         margin-left: 0px;
     }
 
-    #priority, #title, #due-date  {
+    #priority, #title, #duedate  {
         width: 100%;
     }   
 }
