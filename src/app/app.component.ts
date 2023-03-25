@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { taskList } from './shared/taskList' ;
 import { Validators, FormBuilder } from '@angular/forms';
+import { ServsService } from './shared/servidores/servs.service';
 
 
 @Component({
@@ -17,13 +18,34 @@ export class AppComponent {
     duedate: '',
     description: '',
   });
+
   tasks: taskList[] = [];
 
-  
-
   constructor(
+    private servsService: ServsService,
     private fb: FormBuilder
   ) { }
 
-  addTask(): void {}
+  ngOnInit(): void {
+    this.fetchAllTask();
+  }
+
+  fetchAllTask(): void {
+    this.servsService.getTaskList()
+      .subscribe(task => {
+        this.tasks = task;
+      });
+  }
+
+  addTask(): void {
+    const newTask = this.taskForm.value;
+    this.servsService.createTask(newTask)
+    .subscribe(task => {
+      this.fetchAllTask();
+      this.taskForm.reset();
+      console.log('task created');
+    },
+    erro =>console.log(erro);
+    )
+  }
 }
