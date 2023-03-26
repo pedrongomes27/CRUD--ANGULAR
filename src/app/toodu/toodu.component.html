@@ -55,6 +55,23 @@
   </div>
 
   <div class="container">
-    <ul id="list"></ul>
+    <div class="item" *ngFor="let task of tasks">
+      <div class="row-header">
+        <h2 class="task-title">{{ task.title }}</h2>
+        <p *ngIf="task.dueDate" class="task-due-date">{{ task.dueDate }}</p>
+        <p class="task-priority priority-${item.priority}">{{ task.priority }}</p>
+      </div>
+      <p class="task-description">{{ task.description }}</p>
+      <div class="row-buttons">
+        <button class="option-button" id="editButton" onclick="editItem()">
+          <img src="./../../assets/icon-edit.png" />
+          <span>Editar</span>
+        </button>
+        <button class="option-button" id="deleteButton" onclick="deleteItem()">
+          <img src="./../../assets/icon-delete.png" />
+          <span>Excluir</span>
+        </button>
+      </div>
+    </div>
   </div>
 </body>

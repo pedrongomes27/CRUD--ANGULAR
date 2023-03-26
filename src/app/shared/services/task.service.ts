@@ -1,3 +1,4 @@
+import { environment } from './../../../environments/environments';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -6,26 +7,27 @@ import { Task } from './task.model';
 @Injectable({
   providedIn: 'root'
 })
+
 export class TaskService {
-  private apiUrl = 'http://localhost:3000/tasks';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
   getAllTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.apiUrl);
+    return this.http.get<Task[]>(this.baseUrl);
   }
 
   addTask(task: Task): Observable<Task> {
-    return this.http.post<Task>(this.apiUrl, task);
+    return this.http.post<Task>(this.baseUrl, task);
   }
 
   updateTask(task: Task): Observable<Task> {
-    const url = `${this.apiUrl}/${task.id}`;
+    const url = `${this.baseUrl}/${task.id}`;
     return this.http.put<Task>(url, task);
   }
 
   deleteTask(taskId: number): Observable<any> {
-    const url = `${this.apiUrl}/${taskId}`;
+    const url = `${this.baseUrl}/${taskId}`;
     return this.http.delete(url);
   }
 }

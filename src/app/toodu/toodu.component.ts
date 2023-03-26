@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Task } from './../shared/services/task.model';
 import { TaskService } from './../shared/services/task.service';
-import { LocalStorageService } from '../local-storage.service';
 
 @Component({
   selector: 'app-toodu',
   templateUrl: './toodu.component.html',
   styleUrls: ['./toodu.component.css','./toodu.componentTask.css'],
 })
+
 export class TooduComponent implements OnInit {
   taskForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
@@ -17,13 +17,23 @@ export class TooduComponent implements OnInit {
     dueDate: ['', Validators.required],
   });
 
+  tasks: Task[] = [];
+
   constructor(
     private fb: FormBuilder,
     private taskService: TaskService,
-    private localStorageService: LocalStorageService
   ) {}
-  ngOnInit() {  }
 
+  ngOnInit(): void {
+    this.fetchTasks();
+  }
+
+  fetchTasks(): void {
+    this.taskService.getAllTasks()
+      .subscribe(tasks => {
+        this.tasks = tasks;
+      });
+  }
 
   onSubmit() {
     const task: Task = {
@@ -37,7 +47,7 @@ export class TooduComponent implements OnInit {
       console.log('Task added successfully:', newTask);
       // Salvar a lista atualizada de tarefas no armazenamento local
       const tasks = this.taskService.getAllTasks().subscribe((tasks) => {
-        this.localStorageService.setItem('tasks', tasks);
+        this.taskForm.reset();
         console.log('Tasks saved to local storage:', tasks);
       });
     });
