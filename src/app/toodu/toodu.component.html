@@ -55,11 +55,24 @@
   </div>
 
   <div class="container">
-    <div class="item" *ngFor="let task of tasks">
+    <div class="task" *ngFor="let task of tasks">
       <div class="row-header">
+        <input
+          type="checkbox"
+          [checked]="task.completed"
+          (change)="toggleCompleted(task)"
+          [ngClass]="{
+            'priority-null': task.priority === null,
+            'priority-Alta': task.priority === 'Alta',
+            'priority-Media': task.priority === 'Media',
+            'priority-Baixa': task.priority === 'Baixa'
+          }"
+        />
         <h2 class="task-title">{{ task.title }}</h2>
         <p *ngIf="task.dueDate" class="task-due-date">{{ task.dueDate }}</p>
-        <p class="task-priority priority-${item.priority}">{{ task.priority }}</p>
+        <p class="task-priority priority-${item.priority}">
+          {{ task.priority }}
+        </p>
       </div>
       <p class="task-description">{{ task.description }}</p>
       <div class="row-buttons">
@@ -67,7 +80,11 @@
           <img src="./../../assets/icon-edit.png" />
           <span>Editar</span>
         </button>
-        <button class="option-button" id="deleteButton" onclick="deleteItem()">
+        <button
+          (click)="deleteTask(task)"
+          class="option-button"
+          id="deleteButton"
+        >
           <img src="./../../assets/icon-delete.png" />
           <span>Excluir</span>
         </button>

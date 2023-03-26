@@ -6,7 +6,7 @@ ul {
 }
 
 /* estilo para cada item da lista */
-li {
+.task {
   border-radius: 5px;
   margin-bottom: 25px;
   padding: 10px 20px;
