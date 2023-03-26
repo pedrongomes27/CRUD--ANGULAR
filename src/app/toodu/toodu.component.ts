@@ -8,8 +8,10 @@ import { TaskService } from './../shared/services/task.service';
   templateUrl: './toodu.component.html',
   styleUrls: ['./toodu.component.css', './toodu.componentTask.css'],
 })
+
 export class TooduComponent implements OnInit {
   taskForm: FormGroup = this.fb.group({
+    id: [this.taskService.taskIdCounter],
     title: ['', Validators.required],
     description: ['', Validators.required],
     priority: [null, Validators.required],
@@ -31,15 +33,18 @@ export class TooduComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(){ 
     const newTask: Task = this.taskForm.value;
-    this.taskService.addTask(newTask).subscribe((newTask) => {
-      console.log('Task added successfully:', newTask);
-      const tasks = this.taskService.getAllTasks().subscribe((tasks) => {
-        this.taskForm.reset();
-        this.fetchTasks();//TESTAR
-      });
+    this.taskService.addTask(newTask).subscribe(() => {
+      console.log('Task added successfully');
+      this.taskForm.reset();
+      this.fetchTasks();
+      this.taskLog(newTask);
     });
+  }
+
+  taskLog(task: Task): void {
+    console.log(task.id, task.title)
   }
 
   toggleCompleted(task: Task) {
@@ -50,7 +55,8 @@ export class TooduComponent implements OnInit {
   }
   
   deleteTask(task: Task): void {
-      this.taskService.deleteTask(task.id).subscribe(
+      this.taskService.deleteTask(task.id)
+      .subscribe(
         () => {
           this.fetchTasks();
           console.log(task.id + "deletado");

@@ -13,7 +13,7 @@ export class TaskService {
 
   constructor(private http: HttpClient) {}
 
-  private taskIdCounter = 0;
+  taskIdCounter = 0;
 
   getAllTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(this.baseUrl);
