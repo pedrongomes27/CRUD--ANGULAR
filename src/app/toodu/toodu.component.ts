@@ -11,7 +11,6 @@ import { TaskService } from './../shared/services/task.service';
 
 export class TooduComponent implements OnInit {
   taskForm: FormGroup = this.fb.group({
-    id: [this.taskService.taskIdCounter],
     title: ['', Validators.required],
     description: ['', Validators.required],
     priority: [null, Validators.required],
@@ -33,10 +32,10 @@ export class TooduComponent implements OnInit {
     });
   }
 
-  onSubmit(){ 
+  onSubmit() {
     const newTask: Task = this.taskForm.value;
-    this.taskService.addTask(newTask).subscribe(() => {
-      console.log('Task added successfully');
+    this.taskService.addTask(newTask).subscribe((createdTask) => {
+      console.log('Task added successfully:', createdTask);
       this.taskForm.reset();
       this.fetchTasks();
       this.taskLog(newTask);
@@ -54,14 +53,14 @@ export class TooduComponent implements OnInit {
     });
   }
   
-  deleteTask(task: Task): void {
-      this.taskService.deleteTask(task.id)
-      .subscribe(
-        () => {
-          this.fetchTasks();
-          console.log(task.id + "deletado");
-        },
-        (error) => console.log(error)
-      );
-  }
+  // deleteTask(task: Task): void {
+  //     this.taskService.deleteTask(task.id)
+  //     .subscribe(
+  //       () => {
+  //         this.fetchTasks();
+  //         console.log(task.id + "deletado");
+  //       },
+  //       (error) => console.log(error)
+  //     );
+  // }
 }

@@ -14,7 +14,7 @@ export class TaskService {
   constructor(private http: HttpClient) {}
 
   taskIdCounter = 0;
-
+  
   getAllTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(this.baseUrl);
   }
