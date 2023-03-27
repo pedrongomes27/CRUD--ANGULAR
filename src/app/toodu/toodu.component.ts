@@ -75,13 +75,26 @@ task: any;
     this.saveBttActive = true;
   }
 
-  updateTask() {
-    const updatedTask: Task = this.taskForm.value;
+  updateTask(): void {
+    if (!this.selectedTask) {
+      console.log('Nenhuma tarefa selecionada para atualizar');
+      return;
+    }
+  
+    const updatedTask: Task = {
+      ...this.selectedTask,
+      ...this.taskForm.value,
+    };
+  
+    console.log('Tarefa atualizada:', updatedTask);
+  
     this.taskService.updateTask(updatedTask).subscribe(() => {
-      console.log('Task updated successfully');
-      this.fetchTasks();
+      console.log('Tarefa atualizada com sucesso');
+      this.selectedTask = null;
       this.taskForm.reset();
-      this.saveBttActive = false;
+      this.fetchTasks();
     });
   }
+  
+  
 }

@@ -44,14 +44,14 @@
       ></textarea>
 
       <!-- BOTAO -->
-      
-      <button id="save-button" class="save-button" *ngIf="saveBttActive" (click)="updateTask()">Salvar</button>
-      
+
       <button id="add-button" type="submit" *ngIf="!saveBttActive">
         <div>Adicionar task</div>
       </button>
 
     </form>
+
+    <button id="save-button" class="save-button" *ngIf="saveBttActive" (click)="updateTask()">Salvar</button>
   </div>
 
   <div class="container">
