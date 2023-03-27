@@ -11,15 +11,14 @@
           id="title"
           type="text"
           formControlName="title"
-          [class.invalid]="taskForm.get('title')?.invalid && taskForm.get('title')?.touched"
+          [class.invalid]="
+            taskForm.get('title')?.invalid && taskForm.get('title')?.touched
+          "
           placeholder="Digite aqui o título..."
         />
 
         <!-- PRIORIDADE -->
-        <select
-          id="priority"
-          class="form-content"
-          formControlName="priority">
+        <select id="priority" class="form-content" formControlName="priority">
           <option value="null" disabled selected>Prioridade</option>
           <option value="Alta">Alta</option>
           <option value="Media">Media</option>
@@ -82,7 +81,7 @@
           <span>Editar</span>
         </button>
         <button
-          
+          (click)="deleteTask(task)"
           class="option-button"
           id="deleteButton"
         >

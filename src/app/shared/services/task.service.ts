@@ -13,14 +13,11 @@ export class TaskService {
 
   constructor(private http: HttpClient) {}
 
-  taskIdCounter = 0;
-  
   getAllTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(this.baseUrl);
   }
 
   addTask(task: Task): Observable<Task> {
-    task.id = ++this.taskIdCounter;
     return this.http.post<Task>(this.baseUrl, task);
   }
 
@@ -29,7 +26,7 @@ export class TaskService {
     return this.http.put<Task>(url, task);
   }
 
-  deleteTask(taskId: number): Observable<any> {
+  deleteTask(taskId: string): Observable<any> {
     const url = `${this.baseUrl}/${taskId}`;
     return this.http.delete(url);
   }
