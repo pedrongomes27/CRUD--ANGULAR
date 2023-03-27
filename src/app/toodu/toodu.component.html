@@ -44,13 +44,13 @@
       ></textarea>
 
       <!-- BOTAO -->
-      <button id="add-button" type="submit">
+      
+      <button id="save-button" class="save-button" *ngIf="saveBttActive" (click)="updateTask()">Salvar</button>
+      
+      <button id="add-button" type="submit" *ngIf="!saveBttActive">
         <div>Adicionar task</div>
       </button>
 
-      <button id="save-button" class="save-button" style="display: none">
-        Salvar
-      </button>
     </form>
   </div>
 
@@ -75,20 +75,25 @@
         </p>
       </div>
       <p class="task-description">{{ task.description }}</p>
+      
       <div class="row-buttons">
-        <button class="option-button" id="editButton" onclick="editItem()">
+        <button
+          class="option-button"
+          id="editButton"
+          (click)="selectTask(task)">
           <img src="./../../assets/icon-edit.png" />
           <span>Editar</span>
         </button>
+
         <button
           (click)="deleteTask(task)"
           class="option-button"
-          id="deleteButton"
-        >
+          id="deleteButton">
           <img src="./../../assets/icon-delete.png" />
           <span>Excluir</span>
         </button>
       </div>
+
     </div>
   </div>
 </body>

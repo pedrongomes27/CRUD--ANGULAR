@@ -8,7 +8,9 @@ import { TaskService } from './../shared/services/task.service';
   templateUrl: './toodu.component.html',
   styleUrls: ['./toodu.component.css', './toodu.componentTask.css'],
 })
+
 export class TooduComponent implements OnInit {
+  saveBttActive = false;
   taskForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
     description: ['', Validators.required],
@@ -18,6 +20,8 @@ export class TooduComponent implements OnInit {
   });
 
   tasks: Task[] = [];
+  selectedTask: Task | null = null;
+task: any;
 
   constructor(private fb: FormBuilder, private taskService: TaskService) {}
 
@@ -37,7 +41,7 @@ export class TooduComponent implements OnInit {
       console.log('Task added successfully:', newTask);
       const tasks = this.taskService.getAllTasks().subscribe((tasks) => {
         this.taskForm.reset();
-        this.fetchTasks();//TESTAR
+        this.fetchTasks();
       });
     });
   }
@@ -57,5 +61,27 @@ export class TooduComponent implements OnInit {
         },
         (error) => console.log(error)
       );
+  }
+
+  selectTask(task: Task) {
+    this.selectedTask = task;
+    this.taskForm.patchValue({
+      title: task.title,
+      description: task.description,
+      priority: task.priority,
+      dueDate: task.dueDate,
+      completed: task.completed
+    });
+    this.saveBttActive = true;
+  }
+
+  updateTask() {
+    const updatedTask: Task = this.taskForm.value;
+    this.taskService.updateTask(updatedTask).subscribe(() => {
+      console.log('Task updated successfully');
+      this.fetchTasks();
+      this.taskForm.reset();
+      this.saveBttActive = false;
+    });
   }
 }
