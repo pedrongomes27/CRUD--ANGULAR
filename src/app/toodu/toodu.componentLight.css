@@ -64,16 +64,19 @@
   }
   
   .light-mode .container {
-    background-color: #b4b4b4;
+    background-color: #F4F4F4;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.1);
   }
   
   .light-mode .form-content {
-    background-color: #fff;
+    background-color: #F4F4F4;
+    border: 1px solid #D8D8D8;
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1);
     color: #333;
   }
   
-  .light-mode #add-button {
-    background-color: #20212C;
+  .light-mode #add-button, #save-button {
+    background-color: #333;
   }
   
   .light-mode #add-button:hover,
