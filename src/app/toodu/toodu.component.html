@@ -1,21 +1,24 @@
-<body>
-  <h1 id="title-page">Toodu</h1>
+<body [ngClass]="{'light-mode': !isDarkMode, 'dark-mode': isDarkMode}">
 
+  <!-- TEMA -->
+  <label class="switch">
+    <input type="checkbox" (change)=toggleMode()>
+    <span class="slider"></span>
+</label>
+  <!-- HEADER -->
+  <h1 id="title-page">Too<span id="title-page-span">Du</span></h1>
+
+  <!-- FORM -->
   <div class="container">
     <h2 id="title-form">Nova Task</h2>
-    <form id="form" [formGroup]="taskForm" (ngSubmit)="onSubmit()">
-      <div class="column">
+    <form id="form" [formGroup]="taskForm">
+      <div *ngIf="titleError && taskForm.controls['title'].errors" class="error-message"> O <strong>título</strong> é
+        obrigatório</div>
+      <div class="column ">
+
         <!-- TITULO -->
-        <input
-          class="form-content"
-          id="title"
-          type="text"
-          formControlName="title"
-          [class.invalid]="
-            taskForm.get('title')?.invalid && taskForm.get('title')?.touched
-          "
-          placeholder="Digite aqui o título..."
-        />
+        <input class="form-content" id="title" type="text" formControlName="title"
+          [class.invalid]="titleError && taskForm.controls['title'].invalid" placeholder="Digite aqui o título..." />
 
         <!-- PRIORIDADE -->
         <select id="priority" class="form-content" formControlName="priority">
@@ -26,74 +29,65 @@
         </select>
 
         <!-- DATA -->
-        <input
-          type="date"
-          class="form-content"
-          id="duedate"
-          formControlName="dueDate"
-        />
+        <input type="date" class="form-content" id="duedate" formControlName="dueDate" />
       </div>
 
       <!-- DESCRICAO -->
-      <textarea
-        class="form-content"
-        id="description"
-        rows="5"
-        formControlName="description"
-        placeholder="Digite aqui a descrição..."
-      ></textarea>
+      <textarea class="form-content" id="description" rows="5" formControlName="description"
+        placeholder="Digite aqui a descrição..."></textarea>
 
-      <!-- BOTAO -->
-
-      <button id="add-button" type="submit" *ngIf="!saveBttActive">
+      <!-- BOTAO ADICIONAR -->
+      <button id="add-button" type="submit" (click)="onSubmit()" *ngIf="!saveBttActive">
         <div>Adicionar task</div>
       </button>
 
-    </form>
+      <!-- BOTAO SALVAR -->
+      <button id="save-button" class="save-button" *ngIf="saveBttActive" (click)="updateTask()">
+        Salvar
+      </button>
 
-    <button id="save-button" class="save-button" *ngIf="saveBttActive" (click)="updateTask()">Salvar</button>
+    </form>
   </div>
 
-  <div class="container">
+  <!-- TASKS -->
+  <div class="container-task">
     <div class="task" *ngFor="let task of tasks">
+
+      <!-- ROW HEADER -->
       <div class="row-header">
-        <input
-          type="checkbox"
-          [checked]="task.completed"
-          (change)="toggleCompleted(task)"
-          [ngClass]="{
+
+        <!-- CHECKBOX -->
+        <input type="checkbox" class="checkmark" [checked]="task.completed" (change)="toggleCompleted(task)" [ngClass]="{
             'priority-null': task.priority === null,
             'priority-Alta': task.priority === 'Alta',
             'priority-Media': task.priority === 'Media',
             'priority-Baixa': task.priority === 'Baixa'
-          }"
-        />
+          }" />
+
+        <!-- TITULO -->
         <h2 class="task-title">{{ task.title }}</h2>
+
+        <!-- DUEDATE -->
         <p *ngIf="task.dueDate" class="task-due-date">{{ task.dueDate }}</p>
-        <p class="task-priority priority-${item.priority}">
-          {{ task.priority }}
-        </p>
+
       </div>
+
+      <!-- DESCRICAO -->
       <p class="task-description">{{ task.description }}</p>
       
       <div class="row-buttons">
-        <button
-          class="option-button"
-          id="editButton"
-          (click)="selectTask(task)">
+        <!-- BOTAO EDITAR -->
+        <button class="option-button" id="editButton" (click)="selectTask(task)">
           <img src="./../../assets/icon-edit.png" />
           <span>Editar</span>
         </button>
 
-        <button
-          (click)="deleteTask(task)"
-          class="option-button"
-          id="deleteButton">
+        <!-- BOTAO EXCLUIR -->
+        <button (click)="deleteTask(task)" class="option-button" id="deleteButton">
           <img src="./../../assets/icon-delete.png" />
           <span>Excluir</span>
         </button>
       </div>
-
     </div>
   </div>
 </body>

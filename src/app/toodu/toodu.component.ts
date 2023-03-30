@@ -6,11 +6,11 @@ import { TaskService } from './../shared/services/task.service';
 @Component({
   selector: 'app-toodu',
   templateUrl: './toodu.component.html',
-  styleUrls: ['./toodu.component.css', './toodu.componentTask.css'],
+  styleUrls: ['./toodu.component.css', './toodu.componentTask.css', './toodu.componentLight.css'],
 })
-
 export class TooduComponent implements OnInit {
   saveBttActive = false;
+  titleError = false;
   taskForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
     description: ['', Validators.required],
@@ -21,12 +21,38 @@ export class TooduComponent implements OnInit {
 
   tasks: Task[] = [];
   selectedTask: Task | null = null;
-task: any;
+  isDarkMode = true;
 
-  constructor(private fb: FormBuilder, private taskService: TaskService) {}
+  constructor(private fb: FormBuilder, private taskService: TaskService) { }
 
   ngOnInit(): void {
     this.fetchTasks();
+
+    const switchEl = document.querySelector('.switch input') as HTMLInputElement;;
+
+    if (localStorage.getItem("checked") == 'true') {
+      switchEl.checked = true;
+      this.isDarkMode = false;
+    }
+    if (localStorage.getItem("checked") == 'false') {
+      switchEl.checked = false;
+      this.isDarkMode = true;
+    }
+  }
+
+  toggleMode() {
+    const switchEl = document.querySelector('.switch input') as HTMLInputElement;;
+
+    if (switchEl.checked) {
+      this.isDarkMode = false;
+      localStorage.setItem("checked", "true");
+      localStorage.setItem("isDarkMode", this.isDarkMode.toString());
+    }
+    else {
+      this.isDarkMode = true;
+      localStorage.setItem("checked", "false");
+      localStorage.setItem("isDarkMode", this.isDarkMode.toString());
+    }
   }
 
   fetchTasks(): void {
@@ -36,31 +62,38 @@ task: any;
   }
 
   onSubmit() {
+    if (!this.taskForm.value.title) {
+      this.titleError = true;
+      return;
+    }
+
     const newTask: Task = this.taskForm.value;
     this.taskService.addTask(newTask).subscribe((newTask) => {
       console.log('Task added successfully:', newTask);
-      const tasks = this.taskService.getAllTasks().subscribe((tasks) => {
-        this.taskForm.reset();
-        this.fetchTasks();
-      });
+      this.taskForm.reset();
+      this.fetchTasks();//TESTAR
+      this.titleError = false;
     });
   }
 
-  toggleCompleted(task: Task) {
-    task.completed = !task.completed;
-    this.taskService.updateTask(task).subscribe(() => {
+  toggleCompleted(task: Task): void {
+    const updatedTask: Task = {
+      ...task,
+      completed: !task.completed
+    };
+    this.taskService.updateTask(updatedTask).subscribe(() => {
       console.log('Task updated successfully');
     });
   }
-  
+
+
   deleteTask(task: Task): void {
-      this.taskService.deleteTask(task.id).subscribe(
-        () => {
-          this.fetchTasks();
-          console.log(task.id + "deletado");
-        },
-        (error) => console.log(error)
-      );
+    this.taskService.deleteTask(task.id).subscribe(
+      () => {
+        this.fetchTasks();
+      },
+      (error) => console.log(error)
+    );
   }
 
   selectTask(task: Task) {
@@ -80,21 +113,21 @@ task: any;
       console.log('Nenhuma tarefa selecionada para atualizar');
       return;
     }
-  
+
     const updatedTask: Task = {
       ...this.selectedTask,
       ...this.taskForm.value,
     };
-  
+
     console.log('Tarefa atualizada:', updatedTask);
-  
+
     this.taskService.updateTask(updatedTask).subscribe(() => {
       console.log('Tarefa atualizada com sucesso');
       this.selectedTask = null;
       this.taskForm.reset();
       this.fetchTasks();
     });
+    this.saveBttActive = false;
+
   }
-  
-  
 }

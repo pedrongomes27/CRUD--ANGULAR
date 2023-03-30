@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TooduComponent } from './toodu/toodu.component';
+import { FormsModule } from '@angular/forms'; // Add this line
+
 
 @NgModule({
   declarations: [
@@ -16,7 +18,8 @@ import { TooduComponent } from './toodu/toodu.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule 
   ],
   providers: [],
   bootstrap: [AppComponent]
