@@ -118,16 +118,14 @@
   .light-mode input.priority-null[type="checkbox"] {
     border-color: #b4b4b4;
   }
-  
-  input.priority-null[type="checkbox"]:checked {
-    background-color: #b4b4b4;
+  .light-mode input.priority-null[type="checkbox"]:checked {
+    background: url('./../../assets/checked-null.png') no-repeat center center;
+    background-size: contain;
+    border-color: #D8D8D8;
   }
   
   .light-mode #editButton span {
-    color: #fa9332;
-  }
-  .light-mode #editButton img {
-      filter: hue-rotate(320deg);
+    color: #FF992B;
   }
   
   .light-mode #editButton:hover {
